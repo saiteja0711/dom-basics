@@ -41,15 +41,22 @@ function onSubmit(e){
         var deleteBtn=document.createElement('button');
         deleteBtn.className='btn btn-danger btn-sm float-right delete';
         deleteBtn.appendChild(document.createTextNode('Delete'));
-        li.appendChild(document.createTextNode(`${inpName.value}:${inpEmail.value}`));
+        li.appendChild(document.createTextNode(inpName.value+'  '+inpEmail.value));
+        
+
         li.appendChild(deleteBtn);
+
+        var editBtn=document.createElement('button')
+        editBtn.className='btn btn-primary btn-sm float-right  edit';
+        editBtn.appendChild(document.createTextNode('Edit'));
+        li.appendChild(editBtn);
         user.appendChild(li);
        //adding to local stroage by integer num
         let myObj={
             Name:inpName.value,
             Email:inpEmail.value
         };
-        localStorage.setItem(`${inpName.value}:${inpEmail.value}`,JSON.stringify(myObj));
+        localStorage.setItem(inpName.value,JSON.stringify(myObj));
 
         
 
@@ -63,10 +70,28 @@ function removeItem(e){
         if(confirm('Are you sure?'))
         {
             var li=e.target.parentElement;
-            //console.log(e.target.parentElement.firstChild.textContent);
-            localStorage.removeItem(e.target.parentElement.firstChild.textContent);
+            let text=e.target.parentElement.firstChild.textContent.split('  ');
+            localStorage.removeItem(text[0]);
             user.removeChild(li);
         }
+    }
+    if(e.target.classList.contains('edit')){
+        if(confirm('Do you want to Edit?'))
+        {
+            var li=e.target.parentElement;
+            let editText=e.target.parentElement.firstChild.textContent.split('  ');
+            //console.log(e.target.parentElement.firstChild.textContent);
+            let editName=document.querySelector('#name');
+            editName.value=editText[0];
+
+            let editEmail=document.querySelector('#email');
+            editEmail.value=editText[1];
+
+
+            localStorage.removeItem(editText[0]);
+            user.removeChild(li);
+        }
+
     }
 
 }
