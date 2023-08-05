@@ -23,9 +23,10 @@ const inpName=document.querySelector('#name');
 const inpEmail=document.querySelector('#email');
 const msg=document.querySelector('.msg');
 const user=document.querySelector('#users');
-let num=1;
+
 
 form.addEventListener('submit',onSubmit);
+user.addEventListener('click',removeItem);
 function onSubmit(e){
     e.preventDefault();
     if(inpName.value==''||inpEmail=='')
@@ -36,16 +37,36 @@ function onSubmit(e){
     }
     else{
         const li=document.createElement('li');
+        //li.appendChild(document.createTextNode(`${inpName.value}:${inpEmail.value}`));
+        var deleteBtn=document.createElement('button');
+        deleteBtn.className='btn btn-danger btn-sm float-right delete';
+        deleteBtn.appendChild(document.createTextNode('Delete'));
         li.appendChild(document.createTextNode(`${inpName.value}:${inpEmail.value}`));
+        li.appendChild(deleteBtn);
         user.appendChild(li);
        //adding to local stroage by integer num
-        localStorage.setItem('Name'+num.toString(),inpName.value);
-        localStorage.setItem('Email'+num.toString(),inpEmail.value);
-        //increment the num
-        num++;
+        let myObj={
+            Name:inpName.value,
+            Email:inpEmail.value
+        };
+        localStorage.setItem(`${inpName.value}:${inpEmail.value}`,JSON.stringify(myObj));
+
         
 
     }
     inpEmail.value='';
     inpName.value='';
+}
+
+function removeItem(e){
+    if(e.target.classList.contains('delete')){
+        if(confirm('Are you sure?'))
+        {
+            var li=e.target.parentElement;
+            //console.log(e.target.parentElement.firstChild.textContent);
+            localStorage.removeItem(e.target.parentElement.firstChild.textContent);
+            user.removeChild(li);
+        }
+    }
+
 }
