@@ -41,7 +41,7 @@ function onSubmit(e){
        //adding to local stroage by integer num
         localStorage.setItem('Name'+num.toString(),inpName.value);
         localStorage.setItem('Email'+num.toString(),inpEmail.value);
-        //increment
+        //increment the num
         num++;
         
 
