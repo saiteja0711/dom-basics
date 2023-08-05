@@ -38,9 +38,10 @@ function onSubmit(e){
         const li=document.createElement('li');
         li.appendChild(document.createTextNode(`${inpName.value}:${inpEmail.value}`));
         user.appendChild(li);
-       
+       //adding to local stroage by integer num
         localStorage.setItem('Name'+num.toString(),inpName.value);
         localStorage.setItem('Email'+num.toString(),inpEmail.value);
+        //increment
         num++;
         
 
