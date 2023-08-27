@@ -56,7 +56,15 @@ function onSubmit(e){
             Name:inpName.value,
             Email:inpEmail.value
         };
-        localStorage.setItem(inpName.value,JSON.stringify(myObj));
+        console.log("myobj=",myObj);
+        //localStorage.setItem(inpName.value,JSON.stringify(myObj));
+        axios.post("https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails",myObj)
+        .then((response) => {
+               console.log(response)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
 
         
 
