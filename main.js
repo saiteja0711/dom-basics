@@ -153,6 +153,34 @@ function removeItem(e){
             var li=e.target.parentElement;
             let editText=e.target.parentElement.firstChild.textContent.split('  ');
             //console.log(e.target.parentElement.firstChild.textContent);
+            axios.get('https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails')
+    .then((response) =>
+    {
+        //console.log(response);
+        for(var i=0; i<response.data.length ; i++)
+        {
+           if(response.data[i].Name === editText[0])
+           {
+               const idToDelete = response.data[i]._id;
+               
+               axios.delete(`https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails/${idToDelete}`)
+               .then(response => {
+                console.log('Delete successful:')
+              })
+              .catch(error => {
+                console.error('Error deleting data:');
+              });
+           }
+           break;
+        }
+       
+    })
+    .catch((error)=>
+    {
+        console.log(error)
+    })
+
+
             let editName=document.querySelector('#name');
             editName.value=editText[0];
 
