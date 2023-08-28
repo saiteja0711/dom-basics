@@ -27,6 +27,42 @@ const user=document.querySelector('#users');
 
 form.addEventListener('submit',onSubmit);
 user.addEventListener('click',removeItem);
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails")
+    .then((response) =>
+    {
+        //console.log(response);
+        for(var i=0; i<response.data.length ; i++)
+        {
+          showUser(response.data[i]);
+        }
+    })
+    .catch((error)=>
+    {
+        console.log(error)
+    })
+}
+ 
+)
+function showUser(value){
+        const li=document.createElement('li');
+        //li.appendChild(document.createTextNode(`${inpName.value}:${inpEmail.value}`));
+        var deleteBtn=document.createElement('button');
+        deleteBtn.className='btn btn-danger btn-sm float-right delete';
+        deleteBtn.appendChild(document.createTextNode('Delete'));
+        li.appendChild(document.createTextNode(value.Name+'  '+value.Email));
+        
+
+        li.appendChild(deleteBtn);
+
+        var editBtn=document.createElement('button')
+        editBtn.className='btn btn-primary btn-sm float-right  edit';
+        editBtn.appendChild(document.createTextNode('Edit'));
+        li.appendChild(editBtn);
+        user.appendChild(li);
+
+}
+
 function onSubmit(e){
     e.preventDefault();
     if(inpName.value==''||inpEmail=='')
@@ -60,7 +96,8 @@ function onSubmit(e){
         //localStorage.setItem(inpName.value,JSON.stringify(myObj));
         axios.post("https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails",myObj)
         .then((response) => {
-               console.log(response)
+               //console.log(response)
+               
         })
         .catch((err) => {
             console.log(err)
@@ -79,7 +116,34 @@ function removeItem(e){
         {
             var li=e.target.parentElement;
             let text=e.target.parentElement.firstChild.textContent.split('  ');
-            localStorage.removeItem(text[0]);
+            axios.get('https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails')
+    .then((response) =>
+    {
+        //console.log(response);
+        for(var i=0; i<response.data.length ; i++)
+        {
+           if(response.data[i].Name === text[0])
+           {
+               const idToDelete = response.data[i]._id;
+               
+               axios.delete(`https://crudcrud.com/api/93c7a24723334118b3287682efdf2802/appiontmentDetails/${idToDelete}`)
+               .then(response => {
+                console.log('Delete successful:')
+              })
+              .catch(error => {
+                console.error('Error deleting data:');
+              });
+           }
+           break;
+        }
+       
+    })
+    .catch((error)=>
+    {
+        console.log(error)
+    })
+            //localStorage.removeItem(text[0]);
+
             user.removeChild(li);
         }
     }
@@ -96,7 +160,7 @@ function removeItem(e){
             editEmail.value=editText[1];
 
 
-            localStorage.removeItem(editText[0]);
+            //localStorage.removeItem(editText[0]);
             user.removeChild(li);
         }
 
